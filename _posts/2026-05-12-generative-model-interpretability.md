@@ -7,10 +7,10 @@ date: 2026-05-12
 - Extending HOLE to generative space.
   - brainstorm more!!!
 - PH cannot replace existing mech-interp tools as they are good in their own sense.
-  - Probing -- https://sidn.baulab.info/probing/
-  - LogitLens, TunedLens -- https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens
-  - ActivationPatching -- https://www.neelnanda.io/mechanistic-interpretability/attribution-patching
-  - SAEs -- https://www.lesswrong.com/posts/qykrYY6rXXM7EEs8Q/understanding-sae-features-with-the-logit-lens
+  - [Probing](https://sidn.baulab.info/probing/)
+  - [LogitLens, TunedLens](https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens)
+  - [ActivationPatching](https://www.neelnanda.io/mechanistic-interpretability/attribution-patching)
+  - [SAEs](https://www.lesswrong.com/posts/qykrYY6rXXM7EEs8Q/understanding-sae-features-with-the-logit-lens)
   - PH adds a *coordinate-free geometric* descriptor of point clouds drawn from residual-stream states, which sits orthogonally to those tools.
     - **vs probes / SAEs** — coordinate-aware (feature directions). PH is coordinate-free (only distances).
     - **vs activation patching** — causal. PH is descriptive.
@@ -25,9 +25,9 @@ date: 2026-05-12
         - *depth story -- early layers detokenize -- middle layers compute task-relevant features -- late layers re-encode towards the unembedding.*
           - proved by logit lens and tuned lens
             - [Logit Lens](https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens)
-              - project residuals at each layer through final LayerNorm + `W_U` to get per-layer "if you stopped here, what would the model predict?" distributions. Showed late-layer predictions converge toward the true next token, early-layer predictions look like noise / token identity. Model: **GPT-2 small/medium**. Blog post, not a peer-reviewed paper.
+              - project residuals at each layer through final LayerNorm + $$W_U$$ to get per-layer "if you stopped here, what would the model predict?" distributions. Showed late-layer predictions converge toward the true next token, early-layer predictions look like noise / token identity. Model: **GPT-2 small/medium**. Blog post, not a peer-reviewed paper.
             - [Tuned Lens](https://arxiv.org/pdf/2303.08112)
-              - same idea but with a trained affine probe per layer instead of just `W_U`. Showed predictions sharpen monotonically across depth
+              - same idea but with a trained affine probe per layer instead of just $$W_U$$. Showed predictions sharpen monotonically across depth
               - Models: **Pythia (multiple sizes), GPT-Neo, OPT, BLOOM**
             - ^ these papers don't have prompt categories
               - Neither paper used prompt-category labels. Their setup is: arbitrary natural text → per-layer prediction → curve.
@@ -37,13 +37,13 @@ date: 2026-05-12
             - Models on which the depth story has already been proven:
               - trained on **OpenWebText** w/ learned absolute positional encoding
                 - **GPT-2 small, GPT-2 medium**
-              - Trained on **Pile** -- https://arxiv.org/abs/2101.00027
+              - Trained on [**Pile**](https://arxiv.org/abs/2101.00027)
                 - Learned abs pos enc
                   - **GPT-Neo** (125M, 1.3B, 2.7B)
                   - **OPT** (125M through 13B)
-                - ALiBi (Attention with Linear Biases) -- https://arxiv.org/abs/2108.12409
+                - [ALiBi (Attention with Linear Biases)](https://arxiv.org/abs/2108.12409)
                   - **BLOOM** (560M, 1.7B, 3B, 7.1B)
-                - RoPE -- https://arxiv.org/abs/2104.09864
+                - [RoPE](https://arxiv.org/abs/2104.09864)
                   - **Pythia** (multiple sizes — 70M, 160M, 410M, 1B, 1.4B, 2.8B, 6.9B, 12B)
             - Modern instruction-tuned, RoPE-based, RMSNorm-based models — none of which were in either the logit-lens or tuned-lens evaluations:
               - **Qwen** family (Qwen, Qwen1.5, Qwen2, Qwen2.5) — RoPE, RMSNorm, tied embeddings
@@ -63,21 +63,21 @@ date: 2026-05-12
             - fact
             - dialogue
     - **Inputs to PH (point cloud level):**
-      - For each layer `l`, we have `N` points in `R^d` (one per prompt).
-      - Each point is the last-content-token residual stream after block `l` (post-residual, pre-next-block).
+      - For each layer $$l$$, we have $$N$$ points in $$\mathbb{R}^d$$ (one per prompt).
+      - Each point is the last-content-token residual stream after block $$l$$ (post-residual, pre-next-block).
     - **Metric used for PH itself:**
-      - Pairwise **cosine distance** between the `N` points → gives an `N×N` distance matrix.
-      - That matrix feeds into a **Rips complex** at threshold `ε`: for each `ε`, build a graph with an edge between points closer than `ε`, then fill in higher-dim simplices when all sub-edges exist.
-      - Sweep `ε` from 0 to `max_edge_length` (we cap at 2.0 since cosine ≤ 2) → persistence diagram per dimension k ∈ {0, 1, 2}.
+      - Pairwise **cosine distance** between the $$N$$ points → gives an $$N \times N$$ distance matrix.
+      - That matrix feeds into a **Rips complex** at threshold $$\varepsilon$$: for each $$\varepsilon$$, build a graph with an edge between points closer than $$\varepsilon$$, then fill in higher-dim simplices when all sub-edges exist.
+      - Sweep $$\varepsilon$$ from 0 to `max_edge_length` (we cap at 2.0 since cosine $$\le 2$$) → persistence diagram per dimension $$k \in \{0, 1, 2\}$$.
   - Generation-trajectory topology
-    - Point cloud: final-layer last-position residual stream `x_t^L ∈ R^768` at each decoding step `t = 1..T` of a single greedy rollout — the "readout trajectory" that `W_U` projects into next-token logits.
+    - Point cloud: final-layer last-position residual stream $$x_t^L \in \mathbb{R}^{768}$$ at each decoding step $$t = 1, \dots, T$$ of a single greedy rollout — the "readout trajectory" that $$W_U$$ projects into next-token logits.
     - PH:
-      - H_0 long lifetimes = readout is *piecewise-stationary* in feature space (lingers in a few discrete regions before they merge);
-      - H_1 features = readout *re-enters* a previously occupied region — geometric evidence of repetition or topic return.
+      - $$H_0$$ long lifetimes = readout is *piecewise-stationary* in feature space (lingers in a few discrete regions before they merge);
+      - $$H_1$$ features = readout *re-enters* a previously occupied region — geometric evidence of repetition or topic return.
     - **Why** -- if generation is geometrically smooth or jumps between attractors.
       - if it stays aligned with a single feature region across generation or transitions between two different regions.
         - a geometric complement to **logit-lens** analysis at the readout layer.
-    - **Logit-lens overlay**: at each step record `argmax(W_U x_t^L)` (predicted token) and the top-1 logit margin; use these as side-channel colourings in PCA so the topological "phases" can be tied to concrete predicted tokens.
+    - **Logit-lens overlay**: at each step record $$\arg\max(W_U x_t^L)$$ (predicted token) and the top-1 logit margin; use these as side-channel colourings in PCA so the topological "phases" can be tied to concrete predicted tokens.
     - Comments --
       - Pairwise distance between token entropy
         - low entropy tokens clusters
@@ -89,8 +89,8 @@ date: 2026-05-12
         - Computed by binning entropy into low/mid/high terciles and using those as "labels" for cluster-flow analysis.
       - **Why** -- connects topology to the model's own confidence signal which is useful for downstream uncertainty calibration.
   - Sample-diversity topology
-    - **Point cloud**: final-layer last-position residual stream `x_T^L ∈ R^768` across N=30 independent samples from the same prompt, at three `(temperature, top_p)` settings.
+    - **Point cloud**: final-layer last-position residual stream $$x_T^L \in \mathbb{R}^{768}$$ across $$N = 30$$ independent samples from the same prompt, at three `(temperature, top_p)` settings.
     - PH:
-      - Low `τ` → one dominant readout direction → tight unimodal cloud → small total H_0 lifetime, low persistence entropy.
-      - High `τ` → many competing readout directions → multi-modal or diffuse → larger total H_0 lifetime, higher persistence entropy.
+      - Low $$\tau$$ → one dominant readout direction → tight unimodal cloud → small total $$H_0$$ lifetime, low persistence entropy.
+      - High $$\tau$$ → many competing readout directions → multi-modal or diffuse → larger total $$H_0$$ lifetime, higher persistence entropy.
     - **Why**: complement to scalar output entropy. Entropy summarizes *how much* mass is spread over the token vocabulary; PH summarizes *how* the corresponding readouts organize in residual-stream space (one wide mode vs. several narrow modes vs. uniform fog). Relevant to sampling diagnostics and calibration --  observable without any human evaluation
