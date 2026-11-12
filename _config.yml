@@ -1,0 +1,6 @@
+title: Sudhanva M. Athreya
+description: Sud's personal website.
+url: https://foxhound0x00.github.io
+permalink: /blog/:year/:month/:day/:title/
+plugins:
+  - jekyll-feed

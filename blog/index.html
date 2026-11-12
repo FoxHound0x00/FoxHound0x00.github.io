@@ -1,0 +1,37 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog</title>
+
+    <style type="text/css">
+        body {
+            margin: 40px auto;
+            max-width: 1000px;
+            line-height: 1.6;
+            font-size: 18px;
+            color: #161616;
+            padding: 0 10px;
+            background-color: #7dc9ff;
+        }
+
+        a {
+            color: #0066cc;
+        }
+    </style>
+</head>
+
+<body>
+    <p><a href="/">Home</a></p>
+    <h1>Blog</h1>
+
+    <ul>
+        {% for post in site.posts %}
+        <li>{{ post.date | date: "%b %d, %Y" }}: <a href="{{ post.url }}">{{ post.title }}</a></li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

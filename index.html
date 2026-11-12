@@ -3,13 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sudhanva M. Athreya</title>
+    <title>Sud Athreya</title>
     <meta name="description" content="Sud's personal website.">
 
     <style type="text/css">
         body {
             margin: 40px auto;
-            max-width: 650px;
+            max-width: 1000px;
             line-height: 1.6;
             font-size: 18px;
             color: #161616;
@@ -21,36 +21,44 @@
             line-height: 1.2;
         }
 
-        h1 {
-            margin-bottom: 0.5em;
-        }
-
         a {
             color: #0066cc;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .comic-container {
-            text-align: center;
-            margin-bottom: 2em;
-        }
-
-        .comic-container img {
+        img {
             max-width: 100%;
-            height: auto;
         }
 
-        .comic-credit {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
+        .top {
+            display: flex;
+            align-items: center;
+            gap: 20px;
         }
 
-        header {
-            margin-bottom: 2em;
+        .paper {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            margin-bottom: 1.5em;
+        }
+
+        .paper img {
+            width: 40%;
+            background: white;
+        }
+
+        .paper p {
+            margin: 0;
+        }
+
+        @media (max-width: 600px) {
+            .paper {
+                flex-direction: column;
+            }
+
+            .paper img {
+                width: 100%;
+            }
         }
 
         footer {
@@ -61,27 +69,60 @@
 </head>
 
 <body>
-    <div class="comic-container">
-        <img src="https://imgs.xkcd.com/comics/normal_distribution.png" alt="XKCD Normal Distribution Comic">
-        <div class="comic-credit">Credits: xkcd</div>
+    <div class="top">
+        <img src="assets/img/headshot.jpg" alt="Sud" width="120">
+        <h1>Sud Athreya</h1>
     </div>
-
-    <header>
-        <h1>Sudhanva M. Athreya</h1>
-        <p><em>Ph No:</em> +1 Eight Zero One - Six Three Four - Three One Seven Three</p>
-        <p><em>E-mail:</em> last (dot) first (at) hotmail (dot) com</p>
-        <p><em>Github:</em> <a href="https://github.com/FoxHound0x00">FoxHound0x00</a></p>
-    </header>
+    <p><em>E-mail:</em> sud (dot) athreya (at) utah (dot) edu</p>
+    <p><em>Github:</em> <a href="https://github.com/FoxHound0x00">FoxHound0x00</a></p>
+    <p><em>LinkedIn:</em> <a href="https://www.linkedin.com/in/athreya32262/">athreya32262</a></p>
 
     <h2>About Me:</h2>
-    <p>I'm a CS student who loves tech and math.</p>
+    <p>I'm a PhD student in Computer Science at the University of Utah.
+       I work with Paul Rosen at the SCI Institute on interpreting neural networks
+       with topology, and with Warren Pettine at the Medical Machine Intelligence Lab
+       on foundation models for electronic health records.</p>
+    <p><em>Research:</em> Explainable AI (XAI), Topological Data Analysis (TDA),
+       EHR Foundation Models, Representation Learning, Visualization</p>
+
+    <h2>News:</h2>
+    <ul>
+        <li>Aug 2026: Gestalt paper accepted at VISxVision 2026 (IEEE VIS workshop).</li>
+        <li>Aug 2026: Gestalt paper is on <a href="https://arxiv.org/abs/2608.10195">arXiv</a>.</li>
+        <li>Dec 2025: HOLE is on <a href="https://arxiv.org/abs/2512.07988">arXiv</a>.</li>
+    </ul>
+
+    <h2>Papers:</h2>
+
+    <div class="paper">
+        <img src="assets/img/hole.png" alt="Persistent homology on three classes, and HOLE Sankeys for clean vs salt and pepper noise">
+        <p><b>HOLE: Homological Observation of Latent Embeddings for Neural Network Interpretability</b><br>
+           <b>Sudhanva Manjunath Athreya</b>, Paul Rosen<br>
+           <em>arXiv preprint, 2025</em><br>
+           We use persistent homology to see how each layer of a network
+           separates the classes, and show it in an interactive dashboard.<br>
+           <a href="https://arxiv.org/abs/2512.07988">Paper</a> |
+           <a href="https://github.com/FoxHound0x00/hole">Code</a></p>
+    </div>
+
+    <div class="paper">
+        <img src="assets/img/gestalt.png" alt="Gestalt battery pipeline">
+        <p><b>More Accurate, Less Human: Gestalt Grouping in Vision Models</b><br>
+           <b>Sudhanva Manjunath Athreya</b>, Sai Phani Kumar Malladi<br>
+           <em>VISxVision 2026</em><br>
+           Most vision models beat people at grouping shapes and colors,
+           but they don't make the same mistakes people do.<br>
+           <a href="https://arxiv.org/abs/2608.10195">Paper</a></p>
+    </div>
+
+    <h2>Blog:</h2>
+    <p><a href="blog/">Posts</a> | <a href="feed.xml">RSS</a></p>
 
     <h2>CV:</h2>
     <p><em><a href="https://github.com/FoxHound0x00/SudAthCV/blob/master/sud_cv.pdf">Link to CV</a></em></p>
 
     <footer>
-        <p><em>My way of life is like a Kalman filter—constantly fine-tuning through the noise to stay on course.</em></p>
+        <p><em>My way of life is like a Kalman filter, constantly fine-tuning through the noise to stay on course.</em></p>
     </footer>
 </body>
 </html>
-
